@@ -15,6 +15,9 @@ public class Book {
     private String title;
     private String author;
     private boolean isBookApproved;
+    private int count;
+    private boolean isAvailable;
+
   //  private boolean borrowed;
     @ManyToOne
     Type type;
@@ -28,5 +31,7 @@ public class Book {
         this.title = title;
         this.author = author;
         this.isBookApproved = false;
+        this.count = 0;
+        this.isAvailable = false;
     }
 }

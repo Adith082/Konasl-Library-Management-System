@@ -69,10 +69,47 @@ public class BookController {
         Book book = bookService.getBookById(id);
         //  System.out.println(user);
         book.setBookApproved(true);
+        book.setAvailable(true);
+        book.setCount(1);
         bookService.updateBook(book, id);
        // System.out.println(book);
         return new Message("bookid " + id + " is approved");
     }
+
+
+    @RequestMapping(method=RequestMethod.PUT, value="/admin/addExistingBook/{id}")
+    public Message addExistingBook(@PathVariable int id){
+        try {
+            Book book = bookService.getBookById(id);
+          //  System.out.println("  book object printinggg   " + book);
+            book.setCount(book.getCount() + 1);
+            if(!book.isBookApproved()) book.setBookApproved(true);
+            if(!book.isAvailable()) book.setAvailable(true);
+            bookService.updateBook(book, id);
+            return new Message("Existing book having title " + book.getTitle() +  " is added");
+
+        } catch(Exception e){
+            return new Message("this books record does not exist");
+        }
+    }
+
+
+    @RequestMapping(method=RequestMethod.GET, value="/books/{id}/details")
+    public Book bookDetail(@PathVariable int id){
+
+       return bookService.getBookById(id);
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
    // @PostMapping("/user-wishlist/add")
@@ -106,6 +143,9 @@ public class BookController {
             return ResponseEntity.status(e.getStatus()).body(e.getErrorMessage());
         }
     }
+
+
+
 
 
 

@@ -143,15 +143,18 @@ public class UserService {
 
 
 
+    public Message lendBookToUser(int user_id, int book_id){
+        String url = bookServiceBaseUrl + "/users/" + user_id + "/books/" + book_id + "/lend";
+        ResponseEntity<Message> response = restTemplate.exchange(url, HttpMethod.POST, null, Message.class);
+        return response.getBody();
+    }
 
 
-
-
-
-
-
-
-
+    public Message returnBookToLibrary(int user_id, int book_id){
+        String url = bookServiceBaseUrl + "/users/" + user_id + "/books/" + book_id + "/return";
+        ResponseEntity<Message> response = restTemplate.exchange(url, HttpMethod.POST, null, Message.class);
+        return response.getBody();
+    }
 
 
 

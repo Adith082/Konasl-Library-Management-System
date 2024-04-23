@@ -111,6 +111,23 @@ public class UserController {
 
 
 
+    ///lend books
+    @RequestMapping(method=RequestMethod.POST, value="/users/{user_id}/books/{book_id}/lend")
+    public Message lendBookToUser(@PathVariable int user_id, @PathVariable int book_id) {
+        return userService.lendBookToUser(user_id, book_id);
+    }
+
+    @RequestMapping(method=RequestMethod.POST, value="/users/{user_id}/books/{book_id}/return")
+    public Message returnBookToLibrary(@PathVariable int user_id, @PathVariable int book_id) {
+        return userService.returnBookToLibrary(user_id, book_id);
+    }
+
+
+
+
+
+
+
 
 
 

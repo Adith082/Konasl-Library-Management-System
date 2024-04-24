@@ -114,6 +114,7 @@ public class UserController {
     ///lend books
     @RequestMapping(method=RequestMethod.POST, value="/users/{user_id}/books/{book_id}/lend")
     public Message lendBookToUser(@PathVariable int user_id, @PathVariable int book_id) {
+        System.out.println("inside userController of lend");
         return userService.lendBookToUser(user_id, book_id);
     }
 

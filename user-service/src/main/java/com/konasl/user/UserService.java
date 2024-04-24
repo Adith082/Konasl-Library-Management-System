@@ -144,7 +144,9 @@ public class UserService {
 
 
     public Message lendBookToUser(int user_id, int book_id){
+        System.out.println("inside len service of user service");
         String url = bookServiceBaseUrl + "/users/" + user_id + "/books/" + book_id + "/lend";
+        System.out.println(" book-services whole url " + url);
         ResponseEntity<Message> response = restTemplate.exchange(url, HttpMethod.POST, null, Message.class);
         return response.getBody();
     }
@@ -152,7 +154,7 @@ public class UserService {
 
     public Message returnBookToLibrary(int user_id, int book_id){
         String url = bookServiceBaseUrl + "/users/" + user_id + "/books/" + book_id + "/return";
-        ResponseEntity<Message> response = restTemplate.exchange(url, HttpMethod.POST, null, Message.class);
+        ResponseEntity<Message> response = restTemplate.exchange(url, HttpMethod.DELETE, null, Message.class);
         return response.getBody();
     }
 

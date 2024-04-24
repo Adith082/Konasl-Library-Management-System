@@ -148,6 +148,27 @@ public class BookController {
 
 
 
+    ///lend purpose
+    @PostMapping("/users/{user_id}/books/{book_id}/lend")
+    public Message lendBookToUser(@PathVariable int user_id, @PathVariable int book_id){
+        System.out.println("inside Book-Service controller of lending");
+        return bookService.lendBookToUser(user_id, book_id);
+    }
+
+    @DeleteMapping("/users/{user_id}/books/{book_id}/return")
+    public Message returnBookToLibrary(@PathVariable int user_id, @PathVariable  int book_id){
+        return bookService.returnBookToLibrary(user_id, book_id);
+    }
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -4,6 +4,8 @@ import com.example.bookService.book.payload.Message;
 import com.example.bookService.book.payload.UserWishlistResponse;
 import com.example.bookService.book.payload.WishlistRequest;
 import com.example.bookService.exceptions.CustomException;
+import com.example.bookService.lendRecord.LendRecord;
+import com.example.bookService.lendRecord.LendRecordRepository;
 import com.example.bookService.wishlist.WishList;
 import com.example.bookService.wishlist.WishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,13 @@ public class BookService {
 
     @Autowired
     BookRepository bookRepository;
+
     @Autowired
     WishlistRepository wishlistRepository;
+
+    @Autowired
+    LendRecordRepository lendRecordRepository;
+
 
     public List<Book> getAllBooks(String typeId){
         List <Book> books = new ArrayList<>();
@@ -113,7 +120,49 @@ public class BookService {
 
 
 
+// lend
 
+    public Message lendBookToUser(int user_id, int book_id){
+        System.out.println("inside book-service lend method");
+        LendRecord lendRecord = lendRecordRepository.findByUserIdAndBookId(user_id, book_id);
+        if(lendRecord != null){
+            return new Message("already lent before and have not returned it yet");
+        }   else{
+            Book book = bookRepository.findById(book_id).get();
+
+            if(book.isAvailable()){
+
+                if(book.getCount() == 1){
+                    book.setAvailable(false);
+                }
+                book.setCount(book.getCount() - 1);
+                updateBook(book, book_id);
+                lendRecord = LendRecord.builder().userId(user_id).bookId(book_id).build();
+                lendRecordRepository.save(lendRecord);
+                return new Message("Book successfully lent to user " + user_id);
+            } else{
+                return new Message("book is not available for lending");
+            }
+        }
+    }
+
+    public Message returnBookToLibrary(int user_id, int book_id){
+
+
+        System.out.println("inside return BootToLibrary ");
+        Book book = bookRepository.findById(book_id).get();
+        book.setCount(book.getCount() + 1);
+        if(book.getCount() == 1){
+            book.setAvailable(true);
+        }
+        updateBook(book, book_id);
+        System.out.println("Book Updated");
+        LendRecord lendRecord = lendRecordRepository.findByUserIdAndBookId(user_id, book_id);
+        lendRecordRepository.deleteById(lendRecord.getId());
+        System.out.println("delete method is completed");
+        return new Message("Book is returned to library successfully");
+
+    }
 
 
 

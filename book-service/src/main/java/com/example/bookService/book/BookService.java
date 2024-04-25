@@ -1,5 +1,6 @@
 package com.example.bookService.book;
 
+import com.example.bookService.book.payload.LentBook;
 import com.example.bookService.book.payload.Message;
 import com.example.bookService.book.payload.UserWishlistResponse;
 import com.example.bookService.book.payload.WishlistRequest;
@@ -8,12 +9,14 @@ import com.example.bookService.lendRecord.LendRecord;
 import com.example.bookService.lendRecord.LendRecordRepository;
 import com.example.bookService.wishlist.WishList;
 import com.example.bookService.wishlist.WishlistRepository;
+import lombok.Builder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class BookService {
@@ -164,18 +167,21 @@ public class BookService {
 
     }
 
+    public List<LentBook> getAllLentBooksByUid(int user_id){
+        List<LendRecord> lendRecordsOfUser = lendRecordRepository.findByUserId(user_id);
+        List<Integer> bookIdListOfUser = new ArrayList<>();
+        List<LentBook> lentBooks = new ArrayList<>();
+        for (LendRecord lendRecord : lendRecordsOfUser) {
+            int bookId = lendRecord.getBookId(); // Assuming there's a getter method for bookId in LendRecord class
+            bookIdListOfUser.add(bookId);
+        }
 
-
-
-
-
-
-
-
-
-
-
-
-
+        for(Integer bookId : bookIdListOfUser){
+            Book book = getBookById(bookId);
+            LentBook lentBook = LentBook.builder().book_id(book.getId()).title(book.getTitle()).author(book.getAuthor()).build();
+            lentBooks.add(lentBook);
+        }
+            return lentBooks;
+    }
 
 }

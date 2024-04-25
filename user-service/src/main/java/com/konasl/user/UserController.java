@@ -1,5 +1,6 @@
 package com.konasl.user;
 
+import com.konasl.user.payload.LentBook;
 import com.konasl.user.payload.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -123,7 +124,12 @@ public class UserController {
         return userService.returnBookToLibrary(user_id, book_id);
     }
 
+    // get all the lent books of a specific user
 
+    @GetMapping("/users/{user_id}/LentBooks")
+    public List<LentBook> getAllLentBooksByUid(@PathVariable int user_id){
+        return userService.getAllLentBooksByUid(user_id);
+    }
 
 
 

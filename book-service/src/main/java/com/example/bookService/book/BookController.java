@@ -1,5 +1,6 @@
 package com.example.bookService.book;
 
+import com.example.bookService.book.payload.LentBook;
 import com.example.bookService.book.payload.Message;
 import com.example.bookService.book.payload.WishlistRequest;
 import com.example.bookService.exceptions.CustomException;
@@ -158,6 +159,14 @@ public class BookController {
     @DeleteMapping("/users/{user_id}/books/{book_id}/return")
     public Message returnBookToLibrary(@PathVariable int user_id, @PathVariable  int book_id){
         return bookService.returnBookToLibrary(user_id, book_id);
+    }
+
+
+
+
+    @GetMapping("/users/{user_id}/LentBooks")
+    public List<LentBook> getAllLentBooksByUid(@PathVariable int user_id){
+        return bookService.getAllLentBooksByUid(user_id);
     }
 
 

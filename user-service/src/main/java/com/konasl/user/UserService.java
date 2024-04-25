@@ -1,10 +1,7 @@
 package com.konasl.user;
 
 //import com.example.bookService.book.Book;
-import com.konasl.user.payload.Message;
-import com.konasl.user.payload.UserWishlistRequest;
-import com.konasl.user.payload.UserWishlistResponse;
-import com.konasl.user.payload.WishlistRequest;
+import com.konasl.user.payload.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -158,6 +155,22 @@ public class UserService {
         return response.getBody();
     }
 
+
+
+    public List<LentBook> getAllLentBooksByUid(int user_id){
+        String url = bookServiceBaseUrl + "/users/" + user_id + "/LentBooks";
+
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpEntity<?> entity = new HttpEntity<>(headers);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+
+        ResponseEntity<List<LentBook>> response = restTemplate.exchange(url, HttpMethod.GET, entity,
+                new ParameterizedTypeReference<List<LentBook>>() {});
+
+        return response.getBody();
+
+    }
 
 
 
